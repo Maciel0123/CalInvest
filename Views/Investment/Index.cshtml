@@ -1,0 +1,122 @@
+@model Models.InvestmentInputModel
+@{
+    ViewData["Title"] = "Calculadora de Investimentos";
+    var result = ViewBag.Result as Models.InvestmentResultModel;
+}
+
+<link rel="stylesheet" href="~/css/investment.css" />
+
+<div class="investment-page">
+    <div class="investment-container">
+
+        <div class="investment-header">
+            <div>
+                <h1>Calculadora de Investimentos</h1>
+                <p>Simule seu crescimento financeiro com juros compostos.</p>
+            </div>
+        </div>
+
+        <div class="investment-grid">
+
+            <!-- FORM -->
+            <div class="investment-card form-card">
+                <div class="card-top">
+                    <span class="card-badge">Simulação</span>
+                    <h2>Preencha os dados</h2>
+                </div>
+
+                <form asp-action="Index" method="post" class="investment-form">
+                    
+                    @Html.AntiForgeryToken()
+
+                    <!-- 🔥 MOSTRA ERROS -->
+                    <div asp-validation-summary="All" class="text-error"></div>
+
+                    <div class="form-group">
+                        <label asp-for="InitialAmount">Valor inicial</label>
+                        <input asp-for="InitialAmount"
+                               type="number"
+                               step="0.01"
+                               class="form-input"
+                               placeholder="Ex: 1000,00" />
+                        <span asp-validation-for="InitialAmount" class="text-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="MonthlyContribution">Aporte mensal</label>
+                        <input asp-for="MonthlyContribution"
+                               type="number"
+                               step="0.01"
+                               class="form-input"
+                               placeholder="Ex: 500,00" />
+                        <span asp-validation-for="MonthlyContribution" class="text-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="MonthlyInterestRate">Taxa de juros mensal (%)</label>
+                        <input asp-for="MonthlyInterestRate"
+                               type="number"
+                               step="0.01"
+                               class="form-input"
+                               placeholder="Ex: 1,20" />
+                        <span asp-validation-for="MonthlyInterestRate" class="text-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Months">Prazo (meses)</label>
+                        <input asp-for="Months"
+                               type="number"
+                               class="form-input"
+                               placeholder="Ex: 24" />
+                        <span asp-validation-for="Months" class="text-error"></span>
+                    </div>
+
+                    <button type="submit" class="btn-calculate">
+                        Calcular investimento
+                    </button>
+                </form>
+            </div>
+
+            <!-- RESULTADO -->
+            <div class="investment-card result-card">
+                <div class="card-top">
+                    <span class="card-badge badge-result">Resultado</span>
+                    <h2>Resumo da simulação</h2>
+                </div>
+
+                @if (result != null)
+                {
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <span class="result-label">Total investido</span>
+                            <strong class="result-value">@result.TotalInvested.ToString("C")</strong>
+                        </div>
+
+                        <div class="result-item highlight">
+                            <span class="result-label">Montante final</span>
+                            <strong class="result-value">@result.FinalAmount.ToString("C")</strong>
+                        </div>
+
+                        <div class="result-item profit">
+                            <span class="result-label">Rendimento</span>
+                            <strong class="result-value">@result.TotalInterest.ToString("C")</strong>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="empty-state">
+                        <div class="empty-icon">📈</div>
+                        <h3>Nenhuma simulação ainda</h3>
+                        <p>Preencha os campos ao lado para visualizar o resultado do seu investimento.</p>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,234 @@
+@model Models.InvestmentAdvisorViewModel
+
+@{
+    ViewData["Title"] = "Consultor de Carteira com IA";
+}
+
+<link rel="stylesheet" href="~/css/investment-advisor.css" />
+
+<div class="advisor-page">
+    <div class="advisor-container">
+
+        <div class="advisor-header">
+            <div>
+                <span class="advisor-badge">IA Financeira</span>
+                <h1>Consultor de Carteira</h1>
+                <p>
+                    Receba uma sugestão educacional de carteira de investimentos com base
+                    no seu perfil, objetivos e horizonte de tempo.
+                </p>
+            </div>
+        </div>
+
+        <div class="advisor-grid">
+
+            <div class="advisor-card form-card">
+                <div class="card-top">
+                    <h2>Informações do investidor</h2>
+                    <p>Preencha os dados para gerar uma sugestão personalizada.</p>
+                </div>
+
+                <form asp-action="Advisor" method="post" class="advisor-form">
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+                    <div class="form-group">
+                        <label asp-for="InvestorProfile"></label>
+                        <select asp-for="InvestorProfile" class="form-input">
+                            <option value="">Selecione</option>
+                            <option value="Conservador">Conservador</option>
+                            <option value="Moderado">Moderado</option>
+                            <option value="Agressivo">Agressivo</option>
+                        </select>
+                        <span asp-validation-for="InvestorProfile" class="text-error"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label asp-for="Age"></label>
+                            <input asp-for="Age" class="form-input" type="" placeholder="Ex: 18" />
+                            <span asp-validation-for="Age" class="text-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="TimeHorizonYears"></label>
+                            <input asp-for="TimeHorizonYears" class="form-input" type="" placeholder="Ex: 1.000" />
+                            <span asp-validation-for="TimeHorizonYears" class="text-error"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="MonthlyIncome"></label>
+                        <input asp-for="MonthlyIncome" class="form-input" type="" placeholder="Ex: 5.000" />
+                        <span asp-validation-for="MonthlyIncome" class="text-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="AvailableAmount"></label>
+                        <input asp-for="AvailableAmount" class="form-input" type="" placeholder="Ex: 1.000" />
+                        <span asp-validation-for="AvailableAmount" class="text-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="InvestmentGoal"></label>
+                        <textarea asp-for="InvestmentGoal" class="form-input form-textarea" rows="4"
+                                  placeholder="Ex: construir patrimônio no longo prazo, aposentadoria, reserva, renda passiva..."></textarea>
+                        <span asp-validation-for="InvestmentGoal" class="text-error"></span>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input asp-for="HasEmergencyReserve" type="checkbox" />
+                        <label asp-for="HasEmergencyReserve"></label>
+                    </div>
+
+                    <button type="submit" class="btn-generate">
+                        Gerar sugestão com IA
+                    </button>
+                </form>
+            </div>
+
+            <div class="advisor-card result-card">
+                <div class="card-top">
+                    <h2>Resultado da análise</h2>
+                    <p>Distribuição sugerida por classe de ativos.</p>
+                </div>
+
+                @if (Model.Result != null)
+                {
+                    <div class="result-title-block">
+                        <span class="result-mini-badge">Carteira sugerida</span>
+                        <h3>@Model.Result.RecommendationTitle</h3>
+                        <p>@Model.Result.ProfileSummary</p>
+                    </div>
+
+                    <div class="allocation-grid">
+                        <div class="allocation-card">
+                            <span>Renda fixa</span>
+                            <strong>@Model.Result.FixedIncomePercent%</strong>
+
+                            @if (Model.Result.FixedIncomeExamples != null && Model.Result.FixedIncomeExamples.Any())
+                            {
+                                <div class="asset-tags">
+                                    @foreach (var item in Model.Result.FixedIncomeExamples)
+                                    {
+                                        <span class="asset-tag">@item</span>
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        <div class="allocation-card">
+                            <span>Ações</span>
+                            <strong>@Model.Result.StocksPercent%</strong>
+
+                            @if (Model.Result.StockExamples != null && Model.Result.StockExamples.Any())
+                            {
+                                <div class="asset-tags">
+                                    @foreach (var item in Model.Result.StockExamples)
+                                    {
+                                        <span class="asset-tag">@item</span>
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        <div class="allocation-card">
+                            <span>Fundos imobiliários</span>
+                            <strong>@Model.Result.RealEstateFundsPercent%</strong>
+
+                            @if (Model.Result.RealEstateFundExamples != null && Model.Result.RealEstateFundExamples.Any())
+                            {
+                                <div class="asset-tags">
+                                    @foreach (var item in Model.Result.RealEstateFundExamples)
+                                    {
+                                        <span class="asset-tag">@item</span>
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        <div class="allocation-card">
+                            <span>Internacional</span>
+                            <strong>@Model.Result.InternationalPercent%</strong>
+
+                            @if (Model.Result.InternationalExamples != null && Model.Result.InternationalExamples.Any())
+                            {
+                                <div class="asset-tags">
+                                    @foreach (var item in Model.Result.InternationalExamples)
+                                    {
+                                        <span class="asset-tag">@item</span>
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        <div class="allocation-card highlight">
+                            <span>Reserva de emergência</span>
+                            <strong>@Model.Result.EmergencyReservePercent%</strong>
+
+                            @if (Model.Result.EmergencyReserveExamples != null && Model.Result.EmergencyReserveExamples.Any())
+                            {
+                                <div class="asset-tags">
+                                    @foreach (var item in Model.Result.EmergencyReserveExamples)
+                                    {
+                                        <span class="asset-tag">@item</span>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    
+                    <div class="result-section">
+                        <h4>Justificativa</h4>
+                        <p>@Model.Result.Rationale</p>
+                    </div>
+
+                    @if (Model.Result.Recommendations != null && Model.Result.Recommendations.Any())
+                    {
+                        <div class="result-section">
+                            <h4>Recomendações</h4>
+                            <ul class="result-list">
+                                @foreach (var item in Model.Result.Recommendations)
+                                {
+                                    <li>@item</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    @if (Model.Result.Alerts != null && Model.Result.Alerts.Any())
+                    {
+                        <div class="result-section">
+                            <h4>Alertas</h4>
+                            <ul class="result-list alert-list">
+                                @foreach (var item in Model.Result.Alerts)
+                                {
+                                    <li>@item</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="empty-state">
+                        <div class="empty-icon">🤖</div>
+                        <h3>Nenhuma análise gerada</h3>
+                        <p>
+                            Preencha os dados do investidor para receber uma sugestão de carteira
+                            personalizada com IA.
+                        </p>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

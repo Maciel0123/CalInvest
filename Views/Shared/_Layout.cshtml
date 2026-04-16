@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CalInvest</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/CalInvest.styles.css" asp-append-version="true" />
+</head>
+<body class="app-body">
+    <header class="main-header">
+        <div class="header-container">
+            <a class="logo" asp-area="" asp-controller="Home" asp-action="Index">
+                <span class="logo-icon">📊</span>
+                <span class="logo-text">CalInvest</span>
+            </a>
+
+            <nav class="nav-menu">
+                <a class="nav-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                <a class="nav-item" asp-area="" asp-controller="Investment" asp-action="Index">Calculadora</a>
+                <a class="nav-item" asp-area="" asp-controller="Investment" asp-action="Advisor">Carteira IA</a>
+            </nav>
+
+            <div class="header-actions">
+                <a class="btn-primary-header" asp-area="" asp-controller="Investment" asp-action="Advisor">
+                    Nova análise
+                </a>
+
+                <div class="user-avatar">CI</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-shell">
+        <main role="main" class="app-main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="app-footer">
+        <div class="footer-container">
+            &copy; 2026 - CalInvest
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

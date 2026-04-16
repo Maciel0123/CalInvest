@@ -1,0 +1,231 @@
+html {
+    font-size: 14px;
+    min-height: 100%;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background:
+        radial-gradient(circle at top left, rgba(124, 92, 255, 0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(92, 141, 255, 0.12), transparent 22%),
+        linear-gradient(180deg, #090d18 0%, #0d1322 100%);
+    color: #f5f7ff;
+}
+
+body.app-body {
+    background:
+        radial-gradient(circle at top left, rgba(124, 92, 255, 0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(92, 141, 255, 0.12), transparent 22%),
+        linear-gradient(180deg, #090d18 0%, #0d1322 100%) !important;
+    color: #f5f7ff;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* HEADER */
+.main-header {
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    background: rgba(10, 15, 28, 0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.header-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.logo-icon {
+    font-size: 1.2rem;
+}
+
+.logo-text {
+    color: #ffffff;
+}
+
+/* NAV */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.nav-item {
+    color: #aab4d0;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.nav-item:hover {
+    color: #ffffff;
+}
+
+/* ACTIONS */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.btn-primary-header {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #7c5cff 0%, #5c8dff 100%);
+    color: #ffffff;
+    font-weight: 700;
+    border: none;
+    box-shadow: 0 10px 24px rgba(124, 92, 255, 0.24);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-primary-header:hover {
+    color: #ffffff;
+    transform: translateY(-1px);
+    opacity: 0.95;
+}
+
+.user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+/* PAGE */
+.app-shell {
+    width: 100%;
+}
+
+.app-main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 28px 24px 40px;
+    min-height: calc(100vh - 140px);
+}
+
+/* FOOTER */
+.app-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(10, 15, 28, 0.55);
+}
+
+.footer-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 18px 24px;
+    color: #95a3c7;
+}
+
+/* REMOVE BRANCO DO BOOTSTRAP */
+.container,
+.container-fluid,
+.bg-white,
+.navbar,
+footer,
+.card {
+    background-color: transparent !important;
+}
+
+.text-dark {
+    color: #f5f7ff !important;
+}
+
+.border-bottom,
+.border-top {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.box-shadow {
+    box-shadow: none !important;
+}
+
+button:focus,
+.btn:focus,
+.btn-primary:focus,
+.form-control:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 0.2rem rgba(124, 92, 255, 0.18) !important;
+}
+
+@media (max-width: 900px) {
+    .header-container {
+        flex-wrap: wrap;
+    }
+
+    .nav-menu {
+        width: 100%;
+        order: 3;
+        justify-content: flex-start;
+        gap: 18px;
+        flex-wrap: wrap;
+    }
+
+    .app-main {
+        padding: 22px 14px 32px;
+    }
+
+    .header-container,
+    .footer-container {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+}
+
+select {
+    background-color: #111827 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+/* Remove aparência padrão */
+select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(124, 92, 255, 0.3);
+}
+
+select option {
+    background-color: #0f172a;
+    color: #ffffff;
+}
