@@ -1,0 +1,202 @@
+@model Models.FinanciamentoViewModel
+
+@{
+    ViewData["Title"] = "Calculadora de Financiamento";
+}
+
+<link rel="stylesheet" href="~/css/pages/financiamento.css" asp-append-version="true" />
+
+<div class="financing-page">
+    <div class="financing-container">
+
+        <!-- HEADER -->
+        <div class="financing-header">
+            <h1>Calculadora de Financiamento</h1>
+            <p>Simule parcelas, subsídio, FGTS e custo total do financiamento.</p>
+        </div>
+
+        <div class="financing-grid">
+
+            <!-- FORM -->
+            <div class="financing-card">
+                <div class="card-top">
+                    <span class="card-badge">Simulação</span>
+                    <h2>Preencha os dados</h2>
+                </div>
+
+                <form asp-action="Index" method="post" class="financing-form">
+
+                    <div class="form-group">
+                        <label>Valor do bem</label>
+                        <input asp-for="ValorBem" class="form-input" type="number" step="0.01" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Entrada</label>
+                        <input asp-for="Entrada" class="form-input" type="number" step="0.01" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Prazo em meses</label>
+                        <input asp-for="PrazoMeses" class="form-input" type="number" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Renda mensal</label>
+                        <input asp-for="RendaMensal" class="form-input" type="number" step="0.01" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Usar FGTS?</label>
+                        <select asp-for="UsaFgts" class="form-select">
+                            <option value="false">Não</option>
+                            <option value="true">Sim</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Valor aproximado do FGTS</label>
+                        <input asp-for="ValorFgts" class="form-input" type="number" step="0.01" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Minha Casa Minha Vida</label>
+                        <select asp-for="MinhaCasaMinhaVida" class="form-select">
+                            <option value="false">Não</option>
+                            <option value="true">Sim</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Sistema</label>
+                        <select asp-for="Sistema" class="form-select">
+                            <option value="SAC">Tabela SAC</option>
+                            <option value="PRICE">Tabela PRICE</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-calculate">
+                        Calcular financiamento
+                    </button>
+                </form>
+            </div>
+
+            <!-- RESULTADO -->
+            <div class="financing-card">
+                <div class="card-top">
+                    <span class="card-badge badge-result">Resultado</span>
+                    <h2>Resumo da simulação</h2>
+                </div>
+
+                @if (Model.ValorFinanciado > 0)
+                {
+                    <div class="result-grid">
+
+                        <div class="result-item highlight">
+                            <span class="result-label">Valor financiado</span>
+                            <span class="result-value">@Model.ValorFinanciado.ToString("C")</span>
+                        </div>
+
+                        @if ((decimal?)ViewBag.Subsidio > 0)
+                        {
+                            <div class="result-item profit">
+                                <span class="result-label">Subsídio estimado MCMV</span>
+                                <span class="result-value">
+                                    @(((decimal?)ViewBag.Subsidio ?? 0).ToString("C"))
+                                </span>
+                            </div>
+                        }
+
+                        <div class="result-item">
+                            <span class="result-label">Taxa aplicada</span>
+                            <span class="result-value">
+                                @(((decimal?)ViewBag.TaxaJurosAnual ?? 0).ToString("F2"))% a.a.
+                            </span>
+                        </div>
+
+                        <div class="result-item">
+                            <span class="result-label">Parcela inicial/estimada</span>
+                            <span class="result-value">@Model.Parcela.ToString("C")</span>
+                        </div>
+
+                        <div class="result-item">
+                            <span class="result-label">Limite recomendado da parcela (30% renda)</span>
+                            <span class="result-value">
+                                @(((decimal?)ViewBag.LimiteParcela ?? 0).ToString("C"))
+                            </span>
+                        </div>
+
+                        <div class="result-item">
+                            <span class="result-label">Comprometimento da renda</span>
+                            <span class="result-value">
+                                @(((decimal?)ViewBag.ComprometimentoRenda ?? 0).ToString("F1"))%
+                            </span>
+                        </div>
+
+                        @if ((bool?)ViewBag.ParcelaAprovada == true)
+                        {
+                            <div class="result-item profit">
+                                <span class="result-label">Status da simulação</span>
+                                <span class="result-value">Aprovável</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="result-item danger">
+                                <span class="result-label">Status da simulação</span>
+                                <span class="result-value">Acima da renda</span>
+                            </div>
+                        }
+
+                        <div class="result-item">
+                            <span class="result-label">Total pago</span>
+                            <span class="result-value">@Model.TotalPago.ToString("C")</span>
+                        </div>
+
+                        <div class="result-item">
+                            <span class="result-label">Total de juros</span>
+                            <span class="result-value">@Model.TotalJuros.ToString("C")</span>
+                        </div>
+
+                    </div>
+
+                    <!-- TABELA -->
+                    <div class="result-table-wrap">
+                        <table class="financing-table">
+                            <thead>
+                                <tr>
+                                    <th>Mês</th>
+                                    <th>Parcela</th>
+                                    <th>Juros</th>
+                                    <th>Amortização</th>
+                                    <th>Saldo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Parcelas)
+                                {
+                                    <tr>
+                                        <td>@item.Numero</td>
+                                        <td>@item.ValorParcela.ToString("C")</td>
+                                        <td>@item.Juros.ToString("C")</td>
+                                        <td>@item.Amortizacao.ToString("C")</td>
+                                        <td>@item.SaldoDevedor.ToString("C")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="empty-state">
+                        <div class="empty-icon">📊</div>
+                        <h3>Nenhuma simulação ainda</h3>
+                        <p>Preencha os campos ao lado para visualizar o resultado.</p>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

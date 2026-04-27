@@ -1,3 +1,10 @@
+:root {
+    --bg: #0b1020;
+    --card: rgba(18, 26, 47, 0.88);
+    --text: #f5f7ff;
+    --primary: #6d5dfc;
+}
+
 html {
     font-size: 14px;
     min-height: 100%;
