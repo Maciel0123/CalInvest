@@ -1,8 +1,67 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+
+<section class="home-page">
+    <div class="home-container">
+
+        <div class="hero-section">
+            <span class="hero-badge">CalInvest</span>
+
+            <h1>Planeje melhor seu dinheiro</h1>
+
+            <p>
+                Simule investimentos, financiamentos e receba apoio inteligente
+                para tomar decisões financeiras com mais clareza.
+            </p>
+
+            <div class="hero-actions">
+                <a asp-controller="Investment" asp-action="Index" class="btn-primary">
+                    Começar simulação
+                </a>
+
+                <a asp-controller="Financiamento" asp-action="Index" class="btn-secondary">
+                    Simular financiamento
+                </a>
+
+                <a asp-controller="Investment" asp-action="Advisor" class="btn-secondary">
+                    Montar Carteira
+                </a>
+            </div>
+        </div>
+
+        <div class="features-grid">
+
+            <a asp-controller="Investment" asp-action="Index" class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h2>Calculadora de Investimentos</h2>
+                <p>
+                    Simule aportes mensais, juros compostos e veja o crescimento
+                    estimado do seu patrimônio ao longo do tempo.
+                </p>
+            </a>
+
+            <a asp-controller="Financiamento" asp-action="Index" class="feature-card">
+                <div class="feature-icon">🏠</div>
+                <h2>Calculadora de Financiamento</h2>
+                <p>
+                    Calcule parcelas, juros, amortização, uso de FGTS e simule
+                    cenários com Minha Casa Minha Vida.
+                </p>
+            </a>
+
+            <a asp-controller="Investment" asp-action="Advisor" class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h2>Carteira IA</h2>
+                <p>
+                    Receba uma sugestão de carteira personalizada com base no seu
+                    perfil, objetivos e tolerância ao risco.
+                </p>
+            </a>
+
+        </div>
+
+    </div>
+</section>
